@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBTI 心理機能 完全ガイド</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #0f0f14; color: #e8e4f0; min-height: 100vh; }
+
+/* ナビゲーション */
+.nav { position: sticky; top: 0; background: #0f0f14ee; backdrop-filter: blur(10px); z-index: 100; padding: 0.7rem 1rem; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; border-bottom: 1px solid #2a1f45; }
+.nav-btn { padding: 0.35rem 0.9rem; border-radius: 999px; border: 1px solid #2e2545; background: transparent; color: #9b8bb5; cursor: pointer; font-size: 0.78rem; font-family: inherit; transition: all 0.2s; white-space: nowrap; }
+.nav-btn.active, .nav-btn:hover { border-color: #7c5cbf; background: #2a1f45; color: #d0b8ff; }
+
+/* ページ */
+.page { display: none; max-width: 820px; margin: 0 auto; padding: 1.5rem 1rem 4rem; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* ヒーロー */
+.hero { text-align: center; padding: 2rem 1rem; background: linear-gradient(180deg, #1a1428 0%, #0f0f14 100%); margin-bottom: 2rem; border-radius: 16px; }
+.hero h1 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+.hero p { color: #9b8bb5; font-size: 0.88rem; line-height: 1.7; }
+.hero .badge { display: inline-block; padding: 3px 12px; background: #2a1f45; border-radius: 999px; font-size: 0.75rem; color: #c4b5fd; margin-bottom: 1rem; }
+
+/* セクション見出し */
+.section-title { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #2a1f45; }
+.section-sub { font-size: 0.85rem; color: #9b8bb5; margin-bottom: 1.5rem; line-height: 1.7; }
+
+/* カード */
+.card { background: #1a1428; border-radius: 14px; padding: 1.2rem 1.4rem; margin-bottom: 1rem; border: 1px solid #2e2545; }
+.card h3 { font-size: 0.95rem; font-weight: 700; color: #d0b8ff; margin-bottom: 0.6rem; }
+.card p { font-size: 0.88rem; line-height: 1.8; color: #c0b0d8; }
+.card ul { list-style: none; margin-top: 0.6rem; }
+.card ul li { font-size: 0.85rem; color: #b0a0c8; padding: 4px 0 4px 14px; position: relative; line-height: 1.6; }
+.card ul li::before { content: '·'; position: absolute; left: 0; color: #8b5cf6; font-weight: 700; }
+
+/* 2カラム */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+
+/* 機能カード */
+.func-card { border-radius: 14px; padding: 1.2rem; border: 1px solid; }
+.func-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+.func-card .func-tag { font-size: 0.72rem; display: inline-block; padding: 2px 8px; border-radius: 999px; margin-bottom: 0.7rem; font-weight: 700; }
+.func-card p { font-size: 0.84rem; line-height: 1.75; }
+.func-card ul { list-style: none; margin-top: 0.6rem; }
+.func-card ul li { font-size: 0.82rem; padding: 3px 0 3px 14px; position: relative; line-height: 1.6; }
+.func-card ul li::before { content: '·'; position: absolute; left: 0; font-weight: 700; }
+
+/* 色テーマ */
+.c-green { background: #0d2218; border-color: #1a4a30; }
+.c-green h3 { color: #6ee7c0; }
+.c-green .func-tag { background: #0e2820; color: #2dd4a0; }
+.c-green p, .c-green li { color: #90c8a8; }
+.c-green li::before { color: #2dd4a0; }
+.c-blue { background: #0f2030; border-color: #1a3a5e; }
+.c-blue h3 { color: #90cdf4; }
+.c-blue .func-tag { background: #0c1a2a; color: #60b0e0; }
+.c-blue p, .c-blue li { color: #80a8c8; }
+.c-blue li::before { color: #4a9fd4; }
+.c-amber { background: #221508; border-color: #4a2e10; }
+.c-amber h3 { color: #fbbf74; }
+.c-amber .func-tag { background: #2a1a08; color: #f59e0b; }
+.c-amber p, .c-amber li { color: #c8a070; }
+.c-amber li::before { color: #d97706; }
+.c-pink { background: #220f14; border-color: #4a1a25; }
+.c-pink h3 { color: #f9a8b8; }
+.c-pink .func-tag { background: #2a1018; color: #d44a78; }
+.c-pink p, .c-pink li { color: #c880a0; }
+.c-pink li::before { color: #d44a78; }
+.c-purple { background: #1e1633; border-color: #3d2d6e; }
+.c-purple h3 { color: #c4b5fd; }
+.c-purple .func-tag { background: #2a1f45; color: #a78bfa; }
+.c-purple p, .c-purple li { color: #b0a0d8; }
+.c-purple li::before { color: #8b5cf6; }
+
+/* 優先順位バッジ */
+.rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+.rank-1 { background: #fbbf74; color: #221508; }
+.rank-2 { background: #90cdf4; color: #0f2030; }
+.rank-3 { background: #f9a8b8; color: #220f14; }
+.rank-4 { background: #6b7280; color: #fff; }
+
+/* 優先順位行 */
+.rank-row { display: flex; align-items: flex-start; gap: 12px; padding: 0.8rem; border-radius: 10px; margin-bottom: 8px; }
+.rank-row.r1 { background: #1e1508; border: 1px solid #4a3010; }
+.rank-row.r2 { background: #0f1820; border: 1px solid #1a3050; }
+.rank-row.r3 { background: #1e0f14; border: 1px solid #3a1025; }
+.rank-row.r4 { background: #181820; border: 1px solid #2a2a3a; }
+.rank-row .rank-info h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
+.rank-row .rank-info p { font-size: 0.82rem; line-height: 1.6; color: #9b8bb5; }
+.rank-row.r1 .rank-info h4 { color: #fbbf74; }
+.rank-row.r2 .rank-info h4 { color: #90cdf4; }
+.rank-row.r3 .rank-info h4 { color: #f9a8b8; }
+.rank-row.r4 .rank-info h4 { color: #9ca3af; }
+
+/* タイプ選択 */
+.type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1.5rem; }
+@media (max-width: 480px) { .type-grid { grid-template-columns: repeat(2, 1fr); } }
+.type-btn { padding: 0.6rem 0.3rem; border-radius: 12px; border: 1.5px solid; background: transparent; cursor: pointer; font-family: inherit; font-size: 0.88rem; font-weight: 700; transition: all 0.2s; text-align: center; }
+.type-btn small { display: block; font-size: 0.6rem; font-weight: 400; margin-top: 2px; opacity: 0.75; }
+.type-btn.active { transform: scale(1.05); }
+.t-SJ { border-color: #2dd4a0; color: #6ee7c0; }
+.t-SJ.active { background: #0d2218; }
+.t-SP { border-color: #d97706; color: #fbbf74; }
+.t-SP.active { background: #221508; }
+.t-NJ { border-color: #8b5cf6; color: #c4b5fd; }
+.t-NJ.active { background: #1e1633; }
+.t-NP { border-color: #4a9fd4; color: #90cdf4; }
+.t-NP.active { background: #0f2030; }
+
+/* タイプ詳細 */
+.type-detail { display: none; }
+.type-detail.active { display: block; animation: fadeIn 0.3s ease; }
+.type-header { display: flex; align-items: center; gap: 12px; padding: 1.2rem 1.4rem; border-radius: 14px; border: 1px solid; margin-bottom: 1rem; }
+.type-code-big { font-size: 1.8rem; font-weight: 700; flex-shrink: 0; }
+
+/* 注意ボックス */
+.notice { background: #1e1608; border: 1px solid #4a3a10; border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
+.notice h4 { color: #fbbf74; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; }
+.notice p { color: #c8a070; font-size: 0.83rem; line-height: 1.7; }
+
+/* ページ遷移ボタン */
+.page-nav { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
+.pnav-btn { padding: 0.65rem 1.3rem; border-radius: 999px; border: 1px solid #3a2a5a; background: transparent; color: #b0a0d0; cursor: pointer; font-size: 0.85rem; font-family: inherit; transition: all 0.2s; }
+.pnav-btn:hover { background: #2a1f45; border-color: #6d4abf; color: #d0b8ff; }
+.pnav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.highlight { background: #2a1f45; border-radius: 8px; padding: 0.8rem 1rem; margin: 0.8rem 0; font-size: 0.88rem; line-height: 1.7; color: #d0b8ff; border-left: 3px solid #8b5cf6; }
+.big-icon { font-size: 1.5rem; margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showPage('p1')">① MBTIとは</button>
+  <button class="nav-btn" onclick="showPage('p2')">② 8つの機能</button>
+  <button class="nav-btn" onclick="showPage('p3')">③ 優先順位</button>
+  <button class="nav-btn" onclick="showPage('p4')">④ タイプ別詳細</button>
+  <button class="nav-btn" onclick="showPage('p5')">⑤ 注意点</button>
+</div>
+
+<!-- ページ1: MBTIとは -->
+<div class="page active" id="p1">
+  <div class="hero">
+    <div class="badge">はじめての方へ</div>
+    <h1>MBTI・心理機能とは何か？🚪</h1>
+    <p>自分を知ることが、進化の最大の鍵。<br>このガイドでは「8つの扉（心理機能）」を初心者向けにわかりやすく解説します。</p>
+  </div>
+
+  <div class="section-title">なぜ自分を知ることが大切？</div>
+  <div class="section-sub">自分の考え方・感じ方の癖、得意・不得意、適性を理解することで、次の3つが変わります。</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h3>🏃 健康・行動力の向上</h3>
+      <p>自分に合った行動パターンを知ることで、無理なく動けるようになります。</p>
+    </div>
+    <div class="card">
+      <h3>❤️ 人間関係・感情の安定</h3>
+      <p>自分と他者の違いを理解することで、誤解や衝突が減ります。</p>
+    </div>
+    <div class="card">
+      <h3>🧠 思考・スキルの進化</h3>
+      <p>自分の強みを活かし、弱点を補う方法がわかります。</p>
+    </div>
+    <div class="card">
+      <h3>🌟 理想の自分へ</h3>
+      <p>これらの延長上に「理想の自分」がいます。</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:1.5rem">MBTIとユング心理学</div>
+  <div class="card">
+    <h3>📖 ユングのタイプ論が起源</h3>
+    <p>スイスの精神科医・心理学者<strong style="color:#d0b8ff">カール・グスタフ・ユング</strong>が、膨大な患者との対話の中でタイプ論を構築しました。その後、<strong style="color:#d0b8ff">キャサリン・クック・ブリッグスとその娘イザベル・ブリッグス・マイヤーズ</strong>という親娘が、ユングのタイプ論をもとにMBTIを作りました。</p>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ MBTIの限界も知っておこう</h3>
+    <ul>
+      <li>テストの回答がズレやすい（質問の誤解・バイアス・年齢による変化）</li>
+      <li>理想状態しか書いていない（ネガティブな部分が少ない）</li>
+      <li>キャラクターのイメージに引っ張られやすい</li>
+    </ul>
+  </div>
+
+  <div class="notice">
+    <h4>💡 正しい使い方</h4>
+    <p>タイプは「道具・手段」であって、目的ではありません。「私は〇〇タイプだから～」と固定されると可能性が狭まります。<strong>あくまで進化のために参考にする</strong>のがベストです。</p>
+  </div>
+
+  <div class="section-title" style="margin-top:1.5rem">心理機能の全体像</div>
+  <div class="card">
+    <h3>🔑 16パターンは「8つの機能の順番」で決まる</h3>
+    <p>私たちの脳には<strong style="color:#d0b8ff">「認識機能」と「判断機能」</strong>があり、それぞれに外向き・内向きがあります。この組み合わせで8つの心理機能が生まれ、その並び順で16のパターン（タイプ）が決まります。</p>
+    <ul style="margin-top:0.8rem">
+      <li><strong style="color:#6ee7c0">認識機能</strong>：感覚（五感）/ 直観（六感）× 外向き・内向き</li>
+      <li><strong style="color:#fbbf74">判断機能</strong>：思考 / 感情 × 外向き・内向き</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <button class="pnav-btn" disabled>← 前へ</button>
+    <button class="pnav-btn" onclick="showPage('p2')">次へ: 8つの機能 →</button>
+  </div>
+</div>
+
+<!-- ページ2: 8つの機能 -->
+<div class="page" id="p2">
+  <div class="hero">
+    <div class="badge">第2章</div>
+    <h1>8つの心理機能を知ろう 🧠</h1>
+    <p>これが「8つの扉」です。誰でもすべての機能を持っていますが、<br>どれを優先するかがタイプを決めます。</p>
+  </div>
+
+  <div class="section-title">🟢 認識機能（情報の受け取り方）</div>
+  <div class="section-sub">世界をどうやって認識するか。「感覚」か「直観」かの違いです。</div>
+
+  <div class="two-col">
+    <div class="func-card c-green">
+      <span class="func-tag">内向き・認識</span>
+      <h3>🏠 内的感覚（Si）</h3>
+      <p>五感情報を<strong>主観的</strong>に認識し、ディテールにこだわった情報を<strong>過去のデータ</strong>として収集する。</p>
+      <ul>
+        <li>慣れ親しんだ感覚になると安心感を得る</li>
+        <li>保証・安定を求める</li>
+        <li>五感的な変化に敏感（一定性を求める）</li>
+        <li>過去の経験を大切にする</li>
+      </ul>
+    </div>
+    <div class="func-card c-blue">
+      <span class="func-tag">外向き・認識</span>
+      <h3>🌍 外的感覚（Se）</h3>
+      <p>外側からの環境の刺激に興味を示し、瞬時に反応し、<strong>今この瞬間</strong>に集中する。</p>
+      <ul>
+        <li>快楽や興奮状態、エキサイティングな出来事に没頭するのが大好き</li>
+        <li>新しいチャンス・出会いに心を奪われる</li>
+        <li>体を使ってその場で学びたい</li>
+        <li>ネガティブなことはすぐに忘れ、次に飛び込む</li>
+      </ul>
+    </div>
+    <div class="func-card c-purple">
+      <span class="func-tag">内向き・認識</span>
+      <h3>🔮 内的直観（Ni）</h3>
+      <p>抽象的な概念を<strong>主観的</strong>に解釈し、情報と情報の関連性を内側でプロセスし、<strong>未来を予測</strong>する。</p>
+      <ul>
+        <li>人生の方向性・目的（使命）を持ちたい</li>
+        <li>物事の本質・土台を見たい</li>
+        <li>全ての情報を1つの意味に集約したい</li>
+        <li>複数のシナリオで未来をイメージする</li>
+      </ul>
+    </div>
+    <div class="func-card c-amber">
+      <span class="func-tag">外向き・認識</span>
+      <h3>💡 外的直観（Ne）</h3>
+      <p>外側の<strong>新しい抽象的な可能性</strong>を発見することにフォーカス。何か物質を見て、そこからどんな可能性があるかをイメージする。</p>
+      <ul>
+        <li>常にインスピレーションを求め、色んなアイデアを重要視する</li>
+        <li>周りの人々のベストな部分を見て、ポジティブに希望をもつ</li>
+        <li>可能性・ポテンシャルを実現し、自由に成長することを求める</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:1.5rem">🟡 判断機能（情報の判断の仕方）</div>
+  <div class="section-sub">情報をどうやって判断・処理するか。「思考」か「感情」かの違いです。</div>
+
+  <div class="two-col">
+    <div class="func-card c-blue">
+      <span class="func-tag">内向き・判断</span>
+      <h3>⚙️ 内的思考（Ti）</h3>
+      <p>ものごとを正確に分析し、<strong>一貫性のある矛盾のない整合性のとれたフォーミュラ</strong>にまとめ、自分の判断に一貫性を持たせたい。</p>
+      <ul>
+        <li>独自の思考回路で状況判断し、情報を常に整理するのが好き</li>
+        <li>感情バイアスを排除した思考回路を構築したい</li>
+        <li>スキルを磨くことに取り組むのが好き</li>
+        <li>専門的なスキル・知識・知恵を構築することが好き</li>
+      </ul>
+    </div>
+    <div class="func-card c-green">
+      <span class="func-tag">外向き・判断</span>
+      <h3>📊 外的思考（Te）</h3>
+      <p>外側の環境の仕組みにフォーカス。客観的な<strong>システマチックな基準</strong>に基づき、成功・失敗の評価をすることにフォーカス。</p>
+      <ul>
+        <li>問題を瞬時に見つけ、解決策を短時間で見つけることができる</li>
+        <li>全てのアクションに対して、効率性に病的にこだわる</li>
+        <li>最小限の労力で目標を達成することに拘っている</li>
+      </ul>
+    </div>
+    <div class="func-card c-pink">
+      <span class="func-tag">内向き・判断</span>
+      <h3>💜 内的感情（Fi）</h3>
+      <p>情報を内側の<strong>自分の価値観・感情</strong>で判断し、独自の主観で自分のフィーリング・価値観・モラルの境界線をひいて判断しようとする。</p>
+      <ul>
+        <li>内側の調和を保つことにフォーカス</li>
+        <li>本能的に独自の善悪の基準を持っており、悪や苦しみを解決することにこだわる</li>
+        <li>自分のフィーリング・価値観・アクションに整合性を持たせたい</li>
+        <li>個人個人の価値観を尊重したい</li>
+      </ul>
+    </div>
+    <div class="func-card c-amber">
+      <span class="func-tag">外向き・判断</span>
+      <h3>🌐 外的感情（Fe）</h3>
+      <p><strong>客観的な多数決による価値観</strong>で評価して、社会の秩序を保とうとする。</p>
+      <ul>
+        <li>人間関係の調和を構築することを強く求めている</li>
+        <li>他人の価値観・気持ち・ニーズを認識するのが得意</li>
+        <li>社会のネットワークを構築し、周りの人間を感情面でサポートしたい</li>
+        <li>フィードバックに敏感で、落ち込みやすい</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight">
+    💡 <strong>ポイント</strong>：誰でもこの8つの機能すべてを持っています。ただし「どれを優先して使うか」の順番がタイプによって違います。優先して使う機能は快適に感じ、使い慣れていない機能は居心地が悪く感じます。
+  </div>
+
+  <div class="page-nav">
+    <button class="pnav-btn" onclick="showPage('p1')">← 前へ: MBTIとは</button>
+    <button class="pnav-btn" onclick="showPage('p3')">次へ: 優先順位 →</button>
+  </div>
+</div>
+
+<!-- ページ3: 優先順位 -->
+<div class="page" id="p3">
+  <div class="hero">
+    <div class="badge">第3章</div>
+    <h1>心理機能の優先順位 🏆</h1>
+    <p>8つの機能はランダムに並んでいるわけではありません。<br>あなたの中での「使いやすさの順番」があります。</p>
+  </div>
+
+  <div class="section-title">8つの並び順</div>
+  <div class="section-sub">8つの機能は、意識できる「顕在意識」の4つと、意識できない「潜在意識」の4つに分かれています。</div>
+
+  <div class="rank-row r1">
+    <div class="rank-badge rank-1">1</div>
+    <div class="rank-info">
+      <h4>🥇 メイン機能（主機能）= 右手</h4>
+      <p>一番得意で優先的に使う機能。<strong>一番自分らしくいられる機能</strong>。これがうまく使えないと「自分がわからない」「ネガティブ」な状態になる。</p>
+    </div>
+  </div>
+
+  <div class="rank-row r2">
+    <div class="rank-badge rank-2">2</div>
+    <div class="rank-info">
+      <h4>🥈 サブ機能（補助機能）= 左手</h4>
+      <p>メインを支える究極の機能。<strong>意識的に使うべき機能</strong>。メインとエネルギーの向きが逆になる。サブをフルで発揮できている人は全体の<strong>わずか1%</strong>しかいない。メインとサブを使えれば、本当の才能を発揮できる。</p>
+    </div>
+  </div>
+
+  <div class="rank-row r3">
+    <div class="rank-badge rank-3">3</div>
+    <div class="rank-info">
+      <h4>⚠️ 第3機能 = 右足（「言い訳機能」）</h4>
+      <p>メインと<strong>同じエネルギーの向き</strong>で使うのが好きだけど、<strong>ヘタクソ</strong>な機能。これを使っていると「凡人」になる。サブが弱いと、この第3機能で作話・自己正当化・言い訳をするのが癖になる（「第3ループ」）。</p>
+    </div>
+  </div>
+
+  <div class="rank-row r4">
+    <div class="rank-badge rank-4">4</div>
+    <div class="rank-info">
+      <h4>💥 劣勢機能 = 自爆ボタン</h4>
+      <p>突発的に発生する「超ヘタクソ」な機能。無力感や破壊衝動などが現れる。サブが鍛えられていないと、疲れた時にこの機能が発動してしまう（「劣勢グリップ」）。</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem">
+    <h3>🏢 「株式会社あなた」で考えると…</h3>
+    <p>あなたは株式会社「あなた」の<strong style="color:#d0b8ff">社長（メイン機能）</strong>です。</p>
+    <ul>
+      <li>優秀な<strong>秘書（サブ機能）</strong>がいる → 厳しくてもこの秘書の言うことを聞けば会社は成功する</li>
+      <li>「お調子者」の友達（<strong>第3機能</strong>）もいる → いつも好きな遊びに誘ってくる。これに従ってばかりいると会社は凡庸になる</li>
+      <li><strong>どちらの言うことを聞くかで、会社の未来が変わる</strong></li>
+    </ul>
+  </div>
+
+  <div class="section-title" style="margin-top:1.5rem">サブ機能のキーワード</div>
+  <div class="section-sub">各タイプのサブ機能を意識的に使うためのキーワードです。</div>
+
+  <div class="two-col">
+    <div class="card"><h3>ESTJ・ESFJ のサブ</h3><p>内的感覚（Si）<br><strong style="color:#6ee7c0">キーワード：ディテールの追求</strong><br>細かいことを丁寧に積み上げる。</p></div>
+    <div class="card"><h3>ENTJ・ENFJ のサブ</h3><p>内的直観（Ni）<br><strong style="color:#c4b5fd">キーワード：長期的なビジョン</strong><br>未来を見据えた大きな方向性を持つ。</p></div>
+    <div class="card"><h3>ISTP・ISFP のサブ</h3><p>外的感覚（Se）<br><strong style="color:#fbbf74">キーワード：自分の殻を破る</strong><br>実際に行動して経験を積む。</p></div>
+    <div class="card"><h3>INTP・INFP のサブ</h3><p>外的直観（Ne）<br><strong style="color:#90cdf4">キーワード：多角的なアイデア</strong><br>様々な可能性を探求する。</p></div>
+    <div class="card"><h3>ESTP・ENTP のサブ</h3><p>内的思考（Ti）<br><strong style="color:#90cdf4">キーワード：フォーカス！</strong><br>一点集中で深く分析する。</p></div>
+    <div class="card"><h3>ESFP・ENFP のサブ</h3><p>内的感情（Fi）<br><strong style="color:#f9a8b8">キーワード：心のコンパス！</strong><br>自分の価値観を軸にする。</p></div>
+    <div class="card"><h3>ISTJ・INTJ のサブ</h3><p>外的思考（Te）<br><strong style="color:#6ee7c0">キーワード：ゴールの達成</strong><br>効率よく目標に向かって動く。</p></div>
+    <div class="card"><h3>ISFJ・INFJ のサブ</h3><p>外的感情（Fe）<br><strong style="color:#fbbf74">キーワード：社会に出る</strong><br>人とつながり、外に向けて動く。</p></div>
+  </div>
+
+  <div class="highlight">
+    🌱 <strong>進化のマインドセット</strong>：居心地の悪いところに進化があります。サブ機能はメインと逆のエネルギーの向きなので最初は不快に感じますが、それを鍛えることで本当の才能が開花します。
+  </div>
+
+  <div class="page-nav">
+    <button class="pnav-btn" onclick="showPage('p2')">← 前へ: 8つの機能</button>
+    <button class="pnav-btn" onclick="showPage('p4')">次へ: タイプ別詳細 →</button>
+  </div>
+</div>
+
+<!-- ページ4: タイプ別詳細 -->
+<div class="page" id="p4">
+  <div class="hero">
+    <div class="badge">第4章</div>
+    <h1>タイプ別：心理機能の順番 📋</h1>
+    <p>タイプを選んで、メイン・サブ・第3機能の詳細を確認しましょう。</p>
+  </div>
+
+  <div class="type-grid">
+    <button class="type-btn t-SJ" onclick="showTypeDetail('ISTJ')">ISTJ<small>内向感覚</small></button>
+    <button class="type-btn t-SJ" onclick="showTypeDetail('ISFJ')">ISFJ<small>内向感覚</small></button>
+    <button class="type-btn t-NJ" onclick="showTypeDetail('INFJ')">INFJ<small>内向直観</small></button>
+    <button class="type-btn t-NJ" onclick="showTypeDetail('INTJ')">INTJ<small>内向直観</small></button>
+    <button class="type-btn t-SP" onclick="showTypeDetail('ISTP')">ISTP<small>内向思考</small></button>
+    <button class="type-btn t-SP" onclick="showTypeDetail('ISFP')">ISFP<small>内向感情</small></button>
+    <button class="type-btn t-NP" onclick="showTypeDetail('INFP')">INFP<small>内向感情</small></button>
+    <button class="type-btn t-NP" onclick="showTypeDetail('INTP')">INTP<small>内向思考</small></button>
+    <button class="type-btn t-SP" onclick="showTypeDetail('ESTP')">ESTP<small>外向感覚</small></button>
+    <button class="type-btn t-SP" onclick="showTypeDetail('ESFP')">ESFP<small>外向感覚</small></button>
+    <button class="type-btn t-NP" onclick="showTypeDetail('ENFP')">ENFP<small>外向直観</small></button>
+    <button class="type-btn t-NP" onclick="showTypeDetail('ENTP')">ENTP<small>外向直観</small></button>
+    <button class="type-btn t-SJ" onclick="showTypeDetail('ESTJ')">ESTJ<small>外向思考</small></button>
+    <button class="type-btn t-SJ" onclick="showTypeDetail('ESFJ')">ESFJ<small>外向感情</small></button>
+    <button class="type-btn t-NJ" onclick="showTypeDetail('ENFJ')">ENFJ<small>外向感情</small></button>
+    <button class="type-btn t-NJ" onclick="showTypeDetail('ENTJ')">ENTJ<small>外向思考</small></button>
+  </div>
+
+  <div id="type-placeholder" style="text-align:center;padding:2rem;color:#6d5a90;font-size:0.9rem;">
+    <div style="font-size:2rem;margin-bottom:0.5rem">👆</div>
+    上のボタンからタイプを選んでください
+  </div>
+  <div id="type-detail-area"></div>
+
+  <div class="page-nav">
+    <button class="pnav-btn" onclick="showPage('p3')">← 前へ: 優先順位</button>
+    <button class="pnav-btn" onclick="showPage('p5')">次へ: 注意点 →</button>
+  </div>
+</div>
+
+<!-- ページ5: 注意点 -->
+<div class="page" id="p5">
+  <div class="hero">
+    <div class="badge">第5章</div>
+    <h1>タイプを使う上での注意点 ⚠️</h1>
+    <p>知識を正しく活用するために、これだけは覚えておいてください。</p>
+  </div>
+
+  <div class="section-title">タイプ理論の本質</div>
+
+  <div class="card">
+    <h3>🎯 特性理論 vs タイプ理論</h3>
+    <ul>
+      <li><strong style="color:#f9a8b8">特性理論</strong>：どういう行動をとっているか、どういう特徴が強いか、10点満点などの点数で判断する</li>
+      <li><strong style="color:#6ee7c0">タイプ理論（心理機能）</strong>：2択で真ん中や点数はない。人の<strong>内側の思考・感情などのプロセス</strong>を見る（×外側の行動や様子を見る）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🕺 行動だけで判断しない</h3>
+    <p>派手に踊っている人がいても、みんながEタイプとは限りません。ぱっと見Eタイプに見えても、心の中はIタイプで自分中心の人かもしれない。<strong style="color:#d0b8ff">外側の行動ではなく、内側のプロセス</strong>を見ることが大切です。</p>
+  </div>
+
+  <div class="section-title" style="margin-top:1.5rem">「第3ループ」に気をつけよう</div>
+  <div class="section-sub">ほとんどの人は第3機能で言い訳するのが癖になっています。これを「第3ループ」と言います。</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h3>😔 第3ループに入っているサイン</h3>
+      <ul>
+        <li>居心地のいい場所にとどまろうとする</li>
+        <li>新しいことを避ける</li>
+        <li>固定観念が強くなる</li>
+        <li>自分が変わらなくていい理由を考え出す</li>
+        <li>視野が狭くなる</li>
+        <li>過去の経験・知識に固執する</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🌱 第3ループから抜け出すには</h3>
+      <ul>
+        <li>サブ機能を意識的に鍛える</li>
+        <li>居心地が悪いことをあえてやってみる</li>
+        <li>信頼できる人に強くプッシュしてもらう</li>
+        <li>「進化するぞ」という覚悟を持つ</li>
+        <li>コンフォートゾーンから意識的に出る</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:1.5rem">MBTIを使うときの大切なこと</div>
+
+  <div class="two-col">
+    <div class="card">
+      <h3>✅ やるべきこと</h3>
+      <ul>
+        <li>進化のための参考にする</li>
+        <li>自分の強みと弱みを理解する</li>
+        <li>他者との違いを理解して尊重する</li>
+        <li>サブ機能を意識的に鍛える</li>
+        <li>20歳くらいの自分を振り返って診断する</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>❌ やってはいけないこと</h3>
+      <ul>
+        <li>「私は〇〇タイプだから～」と固定する</li>
+        <li>行動だけでタイプを判断する</li>
+        <li>タイプを言い訳に使う</li>
+        <li>他者にタイプを押し付ける</li>
+        <li>精神状態が不安定な時に診断する</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight">
+    🚀 <strong>まとめ</strong>：心理機能はあなたの可能性を広げるための地図です。地図は道具であって、地図に縛られる必要はありません。自分を知り、サブ機能を鍛え、進化し続けることが大切です。
+  </div>
+
+  <div class="page-nav">
+    <button class="pnav-btn" onclick="showPage('p4')">← 前へ: タイプ別詳細</button>
+    <button class="pnav-btn" onclick="showPage('p1')">最初から見る 🔄</button>
+  </div>
+</div>
+
+<script>
+const typeData = {
+  ISTJ: {
+    color: 'c-green', code: 'ISTJ', name: '内向感覚を軸にするタイプ',
+    main: { name: '内的感覚（Si）', desc: '過去のデータを蓄積し、安定と一貫性を求める。五感情報を主観的に認識。', tip: '豊富な経験と事実データがあなたの最大の武器。慎重かつ確実に進める力がある。' },
+    sub:  { name: '外的思考（Te）', desc: 'ゴールに向かって効率よく動く。システムと秩序を外側に作る。', tip: 'キーワード：ゴールの達成。外側の仕組みを整えて、確実に結果を出そう。' },
+    third:{ name: '外的感情（Fe）', desc: '人間関係の調和や社会的なつながり。', tip: 'これに頼りすぎると言い訳になる。第3ループに注意。' },
+    loop: '過去のやり方に固執し、新しいことを避け、視野が狭くなる。'
+  },
+  ISFJ: {
+    color: 'c-green', code: 'ISFJ', name: '内向感覚を軸にするタイプ',
+    main: { name: '内的感覚（Si）', desc: '過去のデータを蓄積し、安定と一貫性を求める。人への細かい気遣いが得意。', tip: '豊富な記憶と経験で人の役に立てる。誠実さと思いやりがあなたの強み。' },
+    sub:  { name: '外的感情（Fe）', desc: '社会に出て人とつながり、人間関係の調和を構築する。', tip: 'キーワード：社会に出る。外に向けて温かさを発揮しよう。' },
+    third:{ name: '内的思考（Ti）', desc: '内側で論理を構築する。', tip: 'これに頼りすぎると内にこもりすぎる。外に出ることを意識しよう。' },
+    loop: '内側にこもりすぎ、周りへの配慮が過剰になり、自己主張ができなくなる。'
+  },
+  INTJ: {
+    color: 'c-purple', code: 'INTJ', name: '内向直観を軸にするタイプ',
+    main: { name: '内的直観（Ni）', desc: '情報を統合して未来を予測する。物事の本質・パターンを見抜く。', tip: '長期的なビジョンと洞察力があなたの武器。大局を見据えた計画が得意。' },
+    sub:  { name: '外的思考（Te）', desc: 'ゴールに向かって効率よく動く。ビジョンを現実化する。', tip: 'キーワード：ゴールの達成。内側の洞察を外側のシステムで実現しよう。' },
+    third:{ name: '内的感情（Fi）', desc: '内側の価値観と感情。', tip: 'これに頼りすぎると自分の価値観に固執しすぎる。客観性を保とう。' },
+    loop: '自分の視点に固執し、他者の意見を排除し、孤立していく。'
+  },
+  INFJ: {
+    color: 'c-purple', code: 'INFJ', name: '内向直観を軸にするタイプ',
+    main: { name: '内的直観（Ni）', desc: '情報を統合して未来を予測する。人の気持ちや本質を見抜く。', tip: '深い洞察と未来への見通しがあなたの強み。物事の本質を一言で表現できる。' },
+    sub:  { name: '外的感情（Fe）', desc: '社会に出て人とつながり、人間関係の調和を構築する。', tip: 'キーワード：社会に出る。内側の洞察を外側の人間関係に活かそう。' },
+    third:{ name: '内的思考（Ti）', desc: '内側で論理を構築する。', tip: 'これに頼りすぎると内にこもりすぎる。人との関わりを大切に。' },
+    loop: '内側の世界に閉じこもり、洞察を活かせないまま孤独感が強まる。'
+  },
+  ISTP: {
+    color: 'c-amber', code: 'ISTP', name: '内向思考を軸にするタイプ',
+    main: { name: '内的思考（Ti）', desc: '独自の論理体系を構築する。矛盾のない整合性のとれた思考を追求する。', tip: '鋭い分析力とシステム思考があなたの武器。物事の仕組みを見抜ける。' },
+    sub:  { name: '外的感覚（Se）', desc: '実際に行動して経験を積む。自分の殻を破る。', tip: 'キーワード：自分の殻を破る。頭の中だけでなく、実際に動いて経験しよう。' },
+    third:{ name: '内的直観（Ni）', desc: '未来を予測し目的を考える。', tip: 'これに頼りすぎると現実から離れた思索に入りすぎる。まず行動しよう。' },
+    loop: '内側の論理に閉じこもり、行動しない理由を探し続ける。虚無感が強くなる。'
+  },
+  ISFP: {
+    color: 'c-amber', code: 'ISFP', name: '内向感情を軸にするタイプ',
+    main: { name: '内的感情（Fi）', desc: '独自の価値観・感情で判断する。自分らしさと誠実さを大切にする。', tip: '深い価値観と独自のモラル感覚があなたの強み。自分の感覚を信じよう。' },
+    sub:  { name: '外的感覚（Se）', desc: '実際に行動して経験を積む。自分の殻を破る。', tip: 'キーワード：自分の殻を破る。美しいものや体験を通じて世界を広げよう。' },
+    third:{ name: '内的直観（Ni）', desc: '未来を予測し目的を考える。', tip: 'これに頼りすぎると自滅的になる。まず外に出て行動することが大切。' },
+    loop: '内側の価値観に固執し、外の世界との接点を失い、自虐的になる。'
+  },
+  INFP: {
+    color: 'c-blue', code: 'INFP', name: '内向感情を軸にするタイプ',
+    main: { name: '内的感情（Fi）', desc: '独自の価値観・感情で判断する。理想と誠実さを追求する。', tip: '豊かな内面世界と深い共感力があなたの強み。独自の価値観を大切に。' },
+    sub:  { name: '外的直観（Ne）', desc: '多角的なアイデアで世界の可能性を広げる。', tip: 'キーワード：多角的なアイデア。内側の価値観を外側のアイデアで実現しよう。' },
+    third:{ name: '内的感覚（Si）', desc: '過去のデータと安定を求める。', tip: 'これに頼りすぎると過去に固執し現実から離れる。外に向けてアイデアを発信しよう。' },
+    loop: '内側の感情に閉じこもり、過去の経験に縛られ、夢が現実にならない。'
+  },
+  INTP: {
+    color: 'c-blue', code: 'INTP', name: '内向思考を軸にするタイプ',
+    main: { name: '内的思考（Ti）', desc: '独自の論理体系を構築する。世界の仕組みを理解するための枠組みを作る。', tip: '深い分析力と独自の論理体系があなたの強み。複雑な問題を解き明かせる。' },
+    sub:  { name: '外的直観（Ne）', desc: '多角的なアイデアで新しい可能性を探る。', tip: 'キーワード：多角的なアイデア。内側の論理を外側のアイデアとつなげよう。' },
+    third:{ name: '内的感覚（Si）', desc: '過去のデータと安定を求める。', tip: 'これに頼りすぎると過去の知識だけで判断するようになる。新しい視点を取り入れよう。' },
+    loop: '内側の論理に閉じこもり、過去の知識だけで世界を判断し、成長が止まる。'
+  },
+  ESTP: {
+    color: 'c-amber', code: 'ESTP', name: '外向感覚を軸にするタイプ',
+    main: { name: '外的感覚（Se）', desc: '今この瞬間の刺激に反応し、環境に素早く適応する。', tip: '瞬発力と行動力があなたの最大の武器。その場の状況を誰よりも素早く読める。' },
+    sub:  { name: '内的思考（Ti）', desc: '内側で論理を深め、フォーカスを持つ。', tip: 'キーワード：フォーカス！行動力に分析力を加えることで結果が大きく変わる。' },
+    third:{ name: '外的感情（Fe）', desc: '社会的な調和と人間関係。', tip: 'これに頼りすぎると人の顔色を伺いすぎて本来の力が出せない。' },
+    loop: '刺激だけを追い求め、内側の整理ができず、短絡的な判断を繰り返す。'
+  },
+  ESFP: {
+    color: 'c-amber', code: 'ESFP', name: '外向感覚を軸にするタイプ',
+    main: { name: '外的感覚（Se）', desc: '今この瞬間の刺激に反応し、人との出会いや楽しい体験を愛する。', tip: '人を喜ばせる力と明るいエネルギーがあなたの強み。今この瞬間を最大限に活かせる。' },
+    sub:  { name: '内的感情（Fi）', desc: '心のコンパスとなる価値観を持つ。', tip: 'キーワード：心のコンパス！自分の価値観を軸に持つことで行動に深みが生まれる。' },
+    third:{ name: '外的思考（Te）', desc: '効率と結果を求める。', tip: 'これに頼りすぎると表面的な効率ばかり追い楽しみを失う。' },
+    loop: '楽しいことだけを追い求め、価値観を見失い、表面的な生活になる。'
+  },
+  ENFP: {
+    color: 'c-blue', code: 'ENFP', name: '外向直観を軸にするタイプ',
+    main: { name: '外的直観（Ne）', desc: '外側の新しい可能性を発見し、人の潜在力を見抜く。', tip: '無限のアイデアと可能性を見出す力があなたの強み。人を鼓舞するエネルギーがある。' },
+    sub:  { name: '内的感情（Fi）', desc: '心のコンパスとなる価値観を持つ。', tip: 'キーワード：心のコンパス！アイデアを自分の価値観でフィルタリングして深みを出そう。' },
+    third:{ name: '外的思考（Te）', desc: '効率と結果を求める。', tip: 'これに頼りすぎると表面的な成果ばかり追い、本来の感性を失う。' },
+    loop: 'アイデアだけが飛び交い、価値観が定まらず、何も完成しない状態が続く。'
+  },
+  ENTP: {
+    color: 'c-blue', code: 'ENTP', name: '外向直観を軸にするタイプ',
+    main: { name: '外的直観（Ne）', desc: '外側の新しい可能性を発見し、パターンとつながりを見出す。', tip: '革新的なアイデアと可能性を見出す力があなたの強み。議論と探求が大好き。' },
+    sub:  { name: '内的思考（Ti）', desc: '内側で論理を深め、フォーカスを持つ。', tip: 'キーワード：フォーカス！多彩なアイデアを論理で絞り込んで深掘りしよう。' },
+    third:{ name: '外的感情（Fe）', desc: '社会的な調和と人間関係。', tip: 'これに頼りすぎると議論のための議論になり、人間関係が壊れる。' },
+    loop: 'アイデアだけが飛び交い、フォーカスを失い、何も完成しない状態が続く。'
+  },
+  ESTJ: {
+    color: 'c-green', code: 'ESTJ', name: '外向思考を軸にするタイプ',
+    main: { name: '外的思考（Te）', desc: '外側の仕組みを整え、効率よくゴールを達成する。', tip: '組織化とシステム構築があなたの武器。目標に向かって人を動かす力がある。' },
+    sub:  { name: '内的感覚（Si）', desc: 'ディテールを追求し、過去の経験を活かす。', tip: 'キーワード：ディテールの追求。大きな構造だけでなく細部にも目を向けよう。' },
+    third:{ name: '外的直観（Ne）', desc: '新しい可能性とアイデア。', tip: 'これに頼りすぎると突拍子もないアイデアに振り回される。地に足をつけよう。' },
+    loop: '効率と支配にこだわりすぎ、人の気持ちを無視し、周囲が離れていく。'
+  },
+  ESFJ: {
+    color: 'c-green', code: 'ESFJ', name: '外向感情を軸にするタイプ',
+    main: { name: '外的感情（Fe）', desc: '社会の調和を保ち、人間関係を構築する。人を感情面でサポートする。', tip: '人を気遣う力と場の空気を読む力があなたの強み。周囲を笑顔にできる。' },
+    sub:  { name: '内的感覚（Si）', desc: 'ディテールを追求し、過去の経験を活かす。', tip: 'キーワード：ディテールの追求。人への配慮を具体的な行動で表現しよう。' },
+    third:{ name: '外的直観（Ne）', desc: '新しい可能性とアイデア。', tip: 'これに頼りすぎると現実から離れた期待を持ちすぎる。' },
+    loop: '他者の評価に依存しすぎ、自分の価値観を見失い、感情的に不安定になる。'
+  },
+  ENFJ: {
+    color: 'c-purple', code: 'ENFJ', name: '外向感情を軸にするタイプ',
+    main: { name: '外的感情（Fe）', desc: '社会の調和を保ち、人の成長を促す。人の気持ちと動機を瞬時に察する。', tip: '人を鼓舞し成長させる力があなたの強み。リーダーシップと共感力を活かそう。' },
+    sub:  { name: '内的直観（Ni）', desc: '長期的なビジョンを持ち、物事の本質を見抜く。', tip: 'キーワード：長期的なビジョン。人への共感を長期的な視野と組み合わせよう。' },
+    third:{ name: '外的感覚（Se）', desc: '今この瞬間の刺激と行動。', tip: 'これに頼りすぎると表面的な活動に振り回される。本質的なビジョンに戻ろう。' },
+    loop: '他者のニーズに応えすぎ、自分のビジョンを見失い、燃え尽きる。'
+  },
+  ENTJ: {
+    color: 'c-purple', code: 'ENTJ', name: '外向思考を軸にするタイプ',
+    main: { name: '外的思考（Te）', desc: '外側の仕組みを整え、効率よくゴールを達成する。組織を動かすリーダー。', tip: '戦略的思考とリーダーシップがあなたの武器。大きなビジョンを現実にできる。' },
+    sub:  { name: '内的直観（Ni）', desc: '長期的なビジョンを持ち、物事の本質を見抜く。', tip: 'キーワード：長期的なビジョン。戦略的な行動に長期的な洞察を加えよう。' },
+    third:{ name: '外的感覚（Se）', desc: '今この瞬間の刺激と行動。', tip: 'これに頼りすぎると表面的なパフォーマンスを追い求めすぎる。' },
+    loop: '支配と効率にこだわりすぎ、人の気持ちや細部を無視し、孤立していく。'
+  }
+};
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = {'p1':0,'p2':1,'p3':2,'p4':3,'p5':4}[id];
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showTypeDetail(code) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  const btns = document.querySelectorAll('#p4 .type-btn');
+  btns.forEach(b => { if (b.textContent.trim().startsWith(code)) b.classList.add('active'); });
+  document.getElementById('type-placeholder').style.display = 'none';
+  const d = typeData[code];
+  const area = document.getElementById('type-detail-area');
+  area.innerHTML = `
+    <div class="func-card ${d.color}" style="margin-bottom:1rem">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.8rem">
+        <span style="font-size:1.6rem;font-weight:700">${d.code}</span>
+        <span style="font-size:0.85rem;opacity:0.8">${d.name}</span>
+      </div>
+    </div>
+    <div class="rank-row r1" style="margin-bottom:10px">
+      <div class="rank-badge rank-1">1</div>
+      <div class="rank-info">
+        <h4>🥇 メイン機能：${d.main.name}</h4>
+        <p>${d.main.desc}</p>
+        <p style="margin-top:6px;color:#fbbf74;font-size:0.82rem">💡 ${d.main.tip}</p>
+      </div>
+    </div>
+    <div class="rank-row r2" style="margin-bottom:10px">
+      <div class="rank-badge rank-2">2</div>
+      <div class="rank-info">
+        <h4>🥈 サブ機能：${d.sub.name}</h4>
+        <p>${d.sub.desc}</p>
+        <p style="margin-top:6px;color:#90cdf4;font-size:0.82rem">💡 ${d.sub.tip}</p>
+      </div>
+    </div>
+    <div class="rank-row r3" style="margin-bottom:10px">
+      <div class="rank-badge rank-3">3</div>
+      <div class="rank-info">
+        <h4>⚠️ 第3機能（言い訳機能）：${d.third.name}</h4>
+        <p>${d.third.desc}</p>
+        <p style="margin-top:6px;color:#f9a8b8;font-size:0.82rem">⚠️ ${d.third.tip}</p>
+      </div>
+    </div>
+    <div class="notice" style="margin-top:0.5rem">
+      <h4>🔁 第3ループに入った場合</h4>
+      <p>${d.loop}</p>
+    </div>
+  `;
+  area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
